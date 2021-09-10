@@ -15,7 +15,8 @@ class Home: UIViewController {
         MealRecipe.fetch(mealId: "52772") {  (results) in
             switch results {
                 case .success(let recipe):
-                    print("recipe: \(recipe.strArea)")
+                    print("recipe: \(String(describing: recipe))")
+                    
 
                     
                 case .failure(let error):
