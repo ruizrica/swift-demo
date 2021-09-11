@@ -37,6 +37,7 @@ class MealRecipe: Codable {
         
         let containerIngredients = try decoder.singleValueContainer()
         let dict = try containerIngredients.decode([String: String?].self)
+        // print("yikes: \(dict)")
         var index = 1
         var ingredientsString = ""
         while let ingredient = dict["strIngredient\(index)"] as? String,

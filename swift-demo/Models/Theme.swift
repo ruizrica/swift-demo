@@ -77,6 +77,25 @@ struct Theme {
         }
         return font
     }
+    
+    static func setupConstraints(view: UIView) {
+        view.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    static func addConstraints(parent: UIViewController, view: UIView) {
+        NSLayoutConstraint(item: view , attribute: .leading, relatedBy: .equal, toItem: parent.view, attribute: .leadingMargin, multiplier: 1.0, constant: 0.0).isActive = true
+        NSLayoutConstraint(item: view , attribute: .trailing, relatedBy: .equal, toItem: parent.view, attribute: .trailingMargin, multiplier: 1.0, constant: 0.0).isActive = true
+        NSLayoutConstraint(item: view , attribute: .top, relatedBy: .equal, toItem: parent.view, attribute: .topMargin, multiplier: 1.0, constant: 0.0).isActive = true
+        NSLayoutConstraint(item: view , attribute: .bottom, relatedBy: .equal, toItem: parent.view, attribute: .bottomMargin, multiplier: 1.0, constant: 0.0).isActive = true
+    }
+    
+    struct homeUi {
+        
+        let header = UIView()
+        // Swift Coding Demo
+        // Ricardo Ruiz
+        // ricardo@kenetic-labs.com
+    }
 }
 
 
