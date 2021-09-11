@@ -20,7 +20,7 @@ class Meal: Codable {
     
     static func fetch(category: String, handler: @escaping (Result<Array<Meal>?, NetworkErrors>) -> Void) {
         
-        let endpoint = Constants.kMealsEndpoint + category
+        let endpoint = kMealsEndpoint + category
         Network.manager.loadCollection(urlString: endpoint) { (results) in
             switch results {
                 case .success(let data):

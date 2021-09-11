@@ -8,31 +8,31 @@
 import Foundation
 import UIKit
 
+//MARK: UI Light Modes
+func tForceLightMode(controller: UIViewController) {
+    controller.overrideUserInterfaceStyle = .light
+}
+
+func tForceDarkMode(controller: UIViewController) {
+    controller.overrideUserInterfaceStyle = .dark
+}
+
+// MARK: - Screen Size Constants
+let tScreenSize: CGRect = UIScreen.main.bounds
+let tScreenWidth = tScreenSize.width
+let tScreenHeight = tScreenSize.height
+
+// MARK: - Colors
+let tColor_flatGreen: UIColor = UIColor(red: 0.152, green: 0.684, blue: 0.373, alpha: 1.0)
+let tColor_flatBlue: UIColor = UIColor(red: 41.0/255.0, green: 128.0/255.0, blue: 185.0/255.0, alpha: 1.0)
+let tColor_flatPurple: UIColor = UIColor(red: 142.0/255.0, green: 68.0/255.0, blue: 173.0/255, alpha: 1.0)
+let tColor_flatDarkGray: UIColor = UIColor(red: 0.227, green: 0.227, blue: 0.227, alpha: 1.0)
+let tColor_flatYellow: UIColor = UIColor(red: 0.917, green: 0.771, blue: 0.273, alpha: 1.0)
+let tColor_transparentWhite: UIColor = UIColor.white.withAlphaComponent(0.85)
+let tColor_white: UIColor = UIColor.white
+
 struct Theme {
     
-    //MARK: UI Light Modes
-    func tForceLightMode(controller: UIViewController) {
-        controller.overrideUserInterfaceStyle = .light
-    }
-
-    func tForceDarkMode(controller: UIViewController) {
-        controller.overrideUserInterfaceStyle = .dark
-    }
-
-    // MARK: - Screen Size Constants
-    static let tScreenSize: CGRect = UIScreen.main.bounds
-    static let tScreenWidth = tScreenSize.width
-    static let tScreenHeight = tScreenSize.height
-
-    // MARK: - Colors
-    static let tColor_flatGreen: UIColor = UIColor(red: 0.152, green: 0.684, blue: 0.373, alpha: 1.0)
-    static let tColor_flatBlue: UIColor = UIColor(red: 41.0/255.0, green: 128.0/255.0, blue: 185.0/255.0, alpha: 1.0)
-    static let tColor_flatPurple: UIColor = UIColor(red: 142.0/255.0, green: 68.0/255.0, blue: 173.0/255, alpha: 1.0)
-    static let tColor_flatDarkGray: UIColor = UIColor(red: 0.227, green: 0.227, blue: 0.227, alpha: 1.0)
-    static let tColor_flatYellow: UIColor = UIColor(red: 0.917, green: 0.771, blue: 0.273, alpha: 1.0)
-    static let tColor_transparentWhite: UIColor = UIColor.white.withAlphaComponent(0.85)
-    static let tColor_white: UIColor = UIColor.white
-
     // MARK: - Fonts Dynamic
     static let defaultFontSize = CGFloat(15.0)
 

@@ -8,6 +8,10 @@
 import Foundation
 import UIKit
 
+let kCategoriesEndpoint = "https://www.themealdb.com/api/json/v1/1/categories.php"
+let kMealsEndpoint = "https://www.themealdb.com/api/json/v1/1/filter.php?c="
+let kRecipeEndpoint = "https://www.themealdb.com/api/json/v1/1/lookup.php?i="
+
 enum NetworkErrors: Error {
     case invalidURL
     case unableToComplete

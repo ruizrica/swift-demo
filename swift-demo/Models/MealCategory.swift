@@ -22,7 +22,7 @@ class MealCategory: Codable {
     
     static func fetch(handler: @escaping (Result<Array<MealCategory>?, NetworkErrors>) -> Void) {
         
-        Network.manager.loadCollection(urlString: Constants.kCategoriesEndpoint) { (results) in
+        Network.manager.loadCollection(urlString: kCategoriesEndpoint) { (results) in
             switch results {
                 case .success(let data):
                     if let response = try? JSONDecoder().decode(MealCategoryResponse.self, from: data!) {
@@ -30,8 +30,8 @@ class MealCategory: Codable {
                         sorted.sort { $0.strCategory < $1.strCategory }
                         handler(.success(sorted))
                     }
-            case .failure(_):
-                handler(.failure(NetworkErrors.invalidData))
+                case .failure(_):
+                    handler(.failure(NetworkErrors.invalidData))
             }
         }
     }

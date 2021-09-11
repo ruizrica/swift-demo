@@ -11,28 +11,65 @@ class MealRecipeResponse: Codable {
     let meals: Array<MealRecipe>
 }
 
+struct Ingredient {
+    let ingredient: String
+    let measure: String
+}
+
 class MealRecipe: Codable {
     
     let idMeal: String
     let strMeal: String
     let strMealThumb: String
-    let strSource: String?
-    let strYoutube: String?
-    let strArea: String?
-    let strCategory: String?
-    let strDrinkAlternate: String?
     let strInstructions: String
-    var strIngredients: String?
+    let strIngredients: String
+    let strArea: String
+    let strCategory: String
+    var strSource: String?
+    var strYoutube: String?
+    var strDrinkAlternate: String?
+    
+    enum CodingKeys : CodingKey {
+        case idMeal, strMeal, strMealThumb, strSource, strYoutube, strArea, strCategory, strDrinkAlternate, strInstructions, strIngredients
+    }
+    
+    required init(from decoder: Decoder) throws {
+        
+        let containerIngredients = try decoder.singleValueContainer()
+        let dict = try containerIngredients.decode([String: String?].self)
+        var index = 1
+        var ingredientsString = ""
+        while let ingredient = dict["strIngredient\(index)"] as? String,
+              let measure = dict["strMeasure\(index)"] as? String,
+              !measure.isEmpty
+        {
+            ingredientsString.append("- \(measure) \(ingredient)\n")
+            index += 1
+        }
+                        
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.idMeal = try container.decode(String.self, forKey: .idMeal)
+        self.strMeal = try container.decode(String.self, forKey: .strMeal)
+        self.strMealThumb = try container.decode(String.self, forKey: .strMealThumb)
+        self.strInstructions = try container.decode(String.self, forKey: .strInstructions)
+        self.strIngredients = ingredientsString
+        self.strArea = try container.decode(String.self, forKey: .strArea)
+        self.strCategory = try container.decode(String.self, forKey: .strCategory)
+        
+        // Optionals - decodeIfPresent
+        self.strSource = try container.decodeIfPresent(String.self, forKey: .strSource)
+        self.strYoutube = try container.decodeIfPresent(String.self, forKey: .strYoutube)
+        self.strDrinkAlternate = try container.decodeIfPresent(String.self, forKey: .strDrinkAlternate)
+    }
     
     static func fetch(mealId: String, handler: @escaping (Result<MealRecipe, NetworkErrors>) -> Void) {
         
-        let endpoint = Constants.kRecipeEndpoint + mealId
+        let endpoint = kRecipeEndpoint + mealId
         Network.manager.loadCollection(urlString: endpoint) { (results) in
             switch results {
                 case .success(let data):
             
                     if let response = try? JSONDecoder().decode(MealRecipeResponse.self, from: data!) {
-                        let ingredients = self.parseIngredients(data: data)
                         guard let recipe = response.meals.first else { return }
                         handler(.success(recipe))
                     }
@@ -40,37 +77,5 @@ class MealRecipe: Codable {
                 handler(.failure(NetworkErrors.invalidData))
             }
         }
-    }
-    
-    static private func parseIngredients(data: Data?) {
-
-        guard let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) else { return }
-        guard let dictionary = json as? [String:Any] else { return }
-        guard let meals = dictionary["meals"] as? Array<Any> else { return }
-        guard let recipe = (meals.first! as? Dictionary<String, Any>) else { return }
-        print(recipe)
-
-
-        let keyForIngredient = "strIngredient"
-        let keyForMeasurement = "strIngredient"
-
-        recipe.forEach { (key, value) in
-            
-        }
-        
-        recipe.map { (key, value) in
-            
-        }
-
-        
-//        guard let mealsObjects = (rawArray["meals"] as Array<Any>) else { return }
-//        guard let recipe = (rawArray.meals[0] as? Dictionary<String, Any>) else { return }
-
-
-//        var ingredients = (rawArray[0] as! Array<[String:String]>).map { (key, value) in
-//            if (keyForIngredient.lowercased().range(of: key) != nil) {
-//                print(key)
-//            }
-//        }
     }
 }

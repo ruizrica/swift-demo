@@ -11,11 +11,13 @@ class Home: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.view.backgroundColor = .black
 
         MealRecipe.fetch(mealId: "52772") {  (results) in
             switch results {
                 case .success(let recipe):
-                    print("recipe: \(String(describing: recipe))")
+                    print("recipe: \(String(describing: recipe.strIngredients))")
                     
 
                     
