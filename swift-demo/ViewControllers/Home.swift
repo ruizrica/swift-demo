@@ -12,18 +12,29 @@ class Home: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = .black
+        drawUI()
+        
+        
 
-        MealRecipe.fetch(mealId: "52772") {  (results) in
-            switch results {
-                case .success(let recipe):
-                    print("recipe: \(String(describing: recipe.strIngredients))")
-                    
-
-                    
-                case .failure(let error):
-                    print("Error: \(error)")
-            }
+    }
+    
+    func drawUI() {
+        
+        let ui = HomeUI(controller: self)
+        self.view .addSubview(ui)
+        
+        let collectionView = ui.collectionView
+        if let categories = collectionView {
+            setupDefaultConstraints(view: categories)
+            self.view.addSubview(collectionView!)
+            addDefaultConstraints(parent: self, view: categories)
         }
+        //Theme().setupConstraints(view: collectionView)
+
+    }
+
+    
+    func openMeals(selected: String) {
+        print(#function)
     }
 }

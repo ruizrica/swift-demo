@@ -47,12 +47,10 @@ class Network {
             handler(image)
             return
         }
-        
         guard let url = URL(string: urlString) else {
             handler(nil)
             return
         }
-        
         let task = URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
             guard let self = self,
                 error == nil,
