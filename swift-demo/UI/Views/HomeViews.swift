@@ -1,5 +1,5 @@
 //
-//  HomeUI.swift
+//  HomeViews.swift
 //  swift-demo
 //
 //  Created by Ricardo Ruiz on 9/11/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeUI: UIView {
+class HomeViews: UIView {
     
     var collectionView: UIView?
         
@@ -21,11 +21,11 @@ class HomeUI: UIView {
     }
     
     private func setup(controller: Home) {
-        
+        controller.view.backgroundColor = kColorFlatDarkGray
         let header = HomeHeader(titleString: "iOS/Swift Coding Demo", authorString: "Ricardo Ruiz", contactString: "ricardo@kenetic-labs.com")
         addSubview(header)
 
-        self.collectionView = HomeCollectionView(controller: controller, collection: [])
+        self.collectionView = HomeCollectionView(controller: controller)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -88,14 +88,20 @@ class HomeCollectionView : UIView, UICollectionViewDelegate, UICollectionViewDat
         super.init(frame: frame)
     }
     
-    convenience init(controller: Home, collection: Array<MealCategory>) {
-        self.init()
+    convenience init(controller: Home) {
         
-        [Network.manager.loadCollection(urlString: kCategoriesEndpoint, handler: { (result) in
-            print("YO: \(result)")
-            
-        })]
-        setup(controller: controller, collection: collection)
+        self.init()
+        MealCategory.fetch { (result) in
+            switch result {
+                case .success(let categoriesObjects):
+                    DispatchQueue.main.async {
+                        guard let mealCategories = categoriesObjects else { return }
+                        self.setup(controller: controller, collection: mealCategories)
+                    }
+                case .failure(let error):
+                    print("Error: \(error)")
+            }
+        }
     }
     
     private func setup(controller: Home, collection: Array<MealCategory>) {
@@ -107,15 +113,17 @@ class HomeCollectionView : UIView, UICollectionViewDelegate, UICollectionViewDat
         layout.scrollDirection = .vertical
         layout.itemSize = CGSize(width: CGFloat(kScreenWidth),height: 137)
         
-        let offset = 120.0
-        let collectionViewFrame = CGRect(x: 0, y: offset, width: Double(kScreenWidth), height: Double(kScreenHeight)-(offset))
+        let offset = 75.0
+        let collectionViewFrame = CGRect(x: -16, y: offset, width: Double(kScreenWidth), height: Double(kScreenHeight)-(offset))
         self.collectionView = UICollectionView(frame: collectionViewFrame, collectionViewLayout: layout)
-        self.collectionView!.alwaysBounceVertical = true
-        self.collectionView!.delegate = self
-        self.collectionView!.dataSource = self
-        self.collectionView!.register(UINib(nibName: "MealCategoryCell", bundle:Bundle.main), forCellWithReuseIdentifier: "cell")
-        self.collectionView!.backgroundColor = kColorFlatDarkGray
-        self.addSubview(self.collectionView!)
+        self.collectionView?.alwaysBounceVertical = true
+        self.collectionView?.delegate = self
+        self.collectionView?.dataSource = self
+        self.collectionView?.register(UINib(nibName: "MealCategoryCell", bundle:Bundle.main), forCellWithReuseIdentifier: "cell")
+        self.collectionView?.backgroundColor = kColorFlatDarkGray
+        if let collectionView = self.collectionView {
+            self.addSubview(collectionView)
+        }
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -126,10 +134,10 @@ class HomeCollectionView : UIView, UICollectionViewDelegate, UICollectionViewDat
             noDataLabel.textColor = kColorFlatYellow.withAlphaComponent(0.70)
             noDataLabel.font = kThemeFontBoldItalic(size: 20) 
             noDataLabel.textAlignment = .center
-            self.collectionView!.backgroundView = noDataLabel
+            self.collectionView?.backgroundView = noDataLabel
         } else {
             count = 1
-            self.collectionView!.backgroundView = nil
+            self.collectionView?.backgroundView = nil
         }
         return count
     }

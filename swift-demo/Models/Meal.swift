@@ -18,7 +18,7 @@ class Meal: Codable {
     let strMeal: String
     let strMealThumb: String
     
-    static func fetch(category: String, handler: @escaping (Result<Array<Meal>?, NetworkErrors>) -> Void) {
+    static func fetch(category: String, handler: @escaping (Result<Array<Meal>?, NetworkError>) -> Void) {
         
         let endpoint = kMealsEndpoint + category
         Network.manager.loadCollection(urlString: endpoint) { (results) in
@@ -30,7 +30,7 @@ class Meal: Codable {
                         handler(.success(sorted))
                     }
             case .failure(_):
-                handler(.failure(NetworkErrors.invalidData))
+                handler(.failure(NetworkError.invalidData))
             }
         }
     }

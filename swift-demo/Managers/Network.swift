@@ -12,7 +12,7 @@ let kCategoriesEndpoint = "https://www.themealdb.com/api/json/v1/1/categories.ph
 let kMealsEndpoint = "https://www.themealdb.com/api/json/v1/1/filter.php?c="
 let kRecipeEndpoint = "https://www.themealdb.com/api/json/v1/1/lookup.php?i="
 
-enum NetworkErrors: Error {
+enum NetworkError: Error {
     case invalidURL
     case unableToComplete
     case invalidResponse
@@ -26,14 +26,14 @@ class Network {
     
     private init() {}
 
-    func loadCollection(urlString: String, handler: @escaping (Result<Data?, NetworkErrors>) -> Void) {
+    func loadCollection(urlString: String, handler: @escaping (Result<Data?, NetworkError>) -> Void) {
         guard let url = URL(string: urlString) else { return }
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let objData = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments) {
                 if ((objData as? [String:Any]) != nil) {
                     handler(.success(data))
                 } else {
-                    handler(.failure(NetworkErrors.invalidData))
+                    handler(.failure(NetworkError.invalidData))
                 }
             }
         }

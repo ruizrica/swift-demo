@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MealsCell: UICollectionViewCell {
+class MealCell: UICollectionViewCell {
     
     @IBOutlet var imageview: UIImageView!
     @IBOutlet weak var label: UILabel!

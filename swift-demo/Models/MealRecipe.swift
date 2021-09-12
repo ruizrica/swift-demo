@@ -63,7 +63,7 @@ class MealRecipe: Codable {
         self.strDrinkAlternate = try container.decodeIfPresent(String.self, forKey: .strDrinkAlternate)
     }
     
-    static func fetch(mealId: String, handler: @escaping (Result<MealRecipe, NetworkErrors>) -> Void) {
+    static func fetch(mealId: String, handler: @escaping (Result<MealRecipe, NetworkError>) -> Void) {
         
         let endpoint = kRecipeEndpoint + mealId
         Network.manager.loadCollection(urlString: endpoint) { (results) in
@@ -75,7 +75,7 @@ class MealRecipe: Codable {
                         handler(.success(recipe))
                     }
             case .failure(_):
-                handler(.failure(NetworkErrors.invalidData))
+                handler(.failure(NetworkError.invalidData))
             }
         }
     }

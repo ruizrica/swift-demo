@@ -9,11 +9,11 @@ import Foundation
 import UIKit
 
 //MARK: UI Light Modes
-func tForceLightMode(controller: UIViewController) {
+func kForceLightMode(controller: UIViewController) {
     controller.overrideUserInterfaceStyle = .light
 }
 
-func tForceDarkMode(controller: UIViewController) {
+func kForceDarkMode(controller: UIViewController) {
     controller.overrideUserInterfaceStyle = .dark
 }
 
